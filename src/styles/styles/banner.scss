@@ -1,0 +1,50 @@
+@import '~bulma/bulma.sass';
+
+.navbar-style {
+  background-color: black;
+  color: red;
+  font-family: 'Cutive Mono', monospace;
+}
+
+.header-style {
+  background-color: white;
+  color: blue;
+  text-transform: uppercase;
+  font-family: 'Cutive Mono', monospace;
+}
+
+.button-nav {
+  background-color: rgb(204,255,0);
+  font-family: 'Cutive Mono', monospace;
+  border: black;
+  margin-bottom: 10px;
+}
+
+.button-nav:hover {
+  background-color: rgb(150, 187, 3);
+}
+
+.link-nav {
+  color: black;
+}
+
+.link-nav:hover {
+  background-color: rgb(150, 187, 3);
+  color: black;
+}
+
+.text-of-header {
+    color: red;
+}
+
+.logo-on-header {
+    max-width: 15%;
+    margin-left: 0%;
+}
+
+.covid-button {
+    background-color: #00a698;
+}
+
+
+//     Blue Color for skyscanner #0770e3;
