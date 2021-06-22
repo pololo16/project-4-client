@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-// import { getToken } from './auth'
+import { getToken } from './auth'
 
 const baseUrl = '/api'
 
@@ -15,3 +15,10 @@ export function getAllFlights() {
   return axios.get(`${baseUrl}/flights`)
 }
 
+export function registerUser(formdata) {
+  return axios.post(`${baseUrl}/register/`, formdata)
+}
+
+export function loginUser(formdata) {
+  return axios.post(`${baseUrl}/login/`, formdata)
+}

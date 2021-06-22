@@ -1,77 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import DatePicker from 'react-date-picker'
 
 import useForm from '../../hooks/useForm'
-
-
-// import { render } from 'sass'
-
-
-// function HomePage() {
-//   // const [ searchTerm, setSearchTerm ] = useForm({
-//   //   origin: '',
-//   // })
-//   const [ searchTerm, setSearchTerm ] = React.useState('')
-//   const handleInput = (e) => {
-//     setSearchTerm(e.target.value)
-//   }
-//   console.log(searchTerm)
-
-  
-//   return (
-//     <div className="first-section">
-//       <Link to='/flights'>flights</Link>
-//       <img className="homepage-img" src='https://content.skyscnr.com/m/785bdfcbe683606c/Large-Flights-hero-2.jpg?crop=1800px:1375px&quality=60' alt="background-img" />
-//       <h1 className="tittle-one"> Let the journey begin</h1>
-//       <div className="form">
-//         <form>
-//           <div>
-//             <label>Origin</label>
-//             <input type="text" name="name" />
-//             <input 
-//               onChange={handleInput} 
-//               value={searchTerm.origin} 
-//               type="text" 
-//               placeholder="Search by airport or city" 
-//               className="input is-medium is-rounded search-input">
-//             </input>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-    
-//   )
-// }
-
-  
-// export default HomePage
-
-
-
-
-// class Form extends Component {
-//   constructor(props) {
-//     super(props)
-
-//     this.state = {
-//       origin: '',
-//     }
-//   }
-
-
-//   render() {
-//     return (
-//       <form>
-//         <div>
-//           <label>Origin</label>
-//           <input type="text" value={this.state.origin}/>
-//         </div>
-//       </form>
-//     )
-//   }
-// }
-// export default Form
-
+import { getAllFlights } from '../../lib/api'
 
 function HomePage() {
 
@@ -83,6 +15,27 @@ function HomePage() {
     passangers: '',
   })
   
+  const [flights, setFlights] = React.useState(null)
+  const [originSearchTerm, setOriginSearchTerm] = React.useState('')
+  const [destinationSearchTerm, setDestinationSearchTerm] = React.useState('')
+  const filteredFlights = flights?.filter(flight => flight.originCiti.toLowerCase() === originSearchTerm.toLowerCase() && flight.destinationCiti.toLowerCase() === destinationSearchTerm.toLowerCase())
+  const [departingValue, onChange] = React.useState(new Date())
+  const [arrivalValue, onChangeArrival] = React.useState(new Date())
+
+
+  React.useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await getAllFlights()
+        setFlights(res.data)
+      } catch (err) {
+        console.log(err)
+      }
+      
+    }
+    getData()
+  }, [])
+
   React.useEffect(() => {
     const getData = async () => {
       try {
@@ -103,83 +56,119 @@ function HomePage() {
 
   const handleSubmit = async event => {
     event.preventDefault()
-
+    try {
+      console.log('submitting')
+      console.log(formData)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  console.log(formData)
+  // const filterRoots = (e) => { 
+  //   const results = flights.filter(flight => { 
+  //     return (
+  //       flight.originCiti.toLowerCase().includes(e.target.value.toLowerCase()) ||
+  //       flight.destinationCiti.toLowerCase().includes(e.target.value.toLowerCase())
+  //     )
+  //   })
+  //   setFilteredFlights(results)
+  // }
+
+  const handleSearch = event => {
+    setOriginSearchTerm(event.target.value)
+    
+  }
+
+  const handleDestinationSearch = event => {
+    setDestinationSearchTerm(event.target.value)
+
+  }
+  
+
+  console.log('outside', originSearchTerm)
+  console.log('outside', destinationSearchTerm)
+  console.log('outside', filteredFlights)
 
   return (
     
-    <section className='section'>
-      <img className="homepage-img" src='https://content.skyscnr.com/m/785bdfcbe683606c/Large-Flights-hero-2.jpg?crop=1800px:1375px&quality=60' alt="background-img" />
-      <h1 className="tittle-one"> Let the journey begin</h1>
-      <div className='container'>
-        <div className='columns'>
+    <section className='section home'>
+      <div className="bg-image">
+        <h1 className="tittle-one"> Let the journey begin</h1>
+        <div className='container'>
           <form 
-            className='className="tittle-one"'
+            className='form columns'
             onSubmit={handleSubmit}
           >
-            <div className='field'>
+            <div className='field column is-2'>
               <div className='control'>
                 <input
                   className={`input ${formErrors.origin ?
                     'is-danger' : '' }`}
                   placeholder='Origin (city or airport)'
                   name='origin'
-                  onChange={handleChange}
-                  value={formData.origin}
+                  onChange={handleSearch}
+                  // value={formData.origin}
+                  value={originSearchTerm}
                 />
               </div>
               {formErrors.origin && <p className='help is-danger'>
                 {formErrors.origin}
               </p>}
             </div>
-            <div className='field'>
+            <div className='field column is-2'>
               <div className='control'>
                 <input 
                   className={`input ${formErrors.destination ? 
                     'is-danger' : '' }`}
                   placeholder='Destination (city or airport)'
                   name='destination'
-                  onChange={handleChange}
-                  value={formData.destination}
+                  onChange={handleDestinationSearch}
+                  value={destinationSearchTerm}
                 />
               </div>
               {formErrors.destination && <p className='help is-danger'>
                 {formErrors.destination}
               </p>}
             </div>
-            <div className='field'>
+            <div className='field column is-2'>
               <div className='control'>
-                <input 
+                {/* <input 
                   className={`input ${formErrors.departing_date ? 
                     'is-danger' : '' }`}
                   placeholder='Departure Date'
                   name='departing_date'
                   onChange={handleChange}
                   value={formData.departing_date}
+                /> */}
+                <DatePicker 
+                  onChange={onChange}
+                  value={departingValue}
                 />
               </div>
               {formErrors.departing_date && <p className='help is-danger'>
                 {formErrors.departing_date}
               </p>}
             </div>
-            <div className='field'>
+            <div className='field column is-2'>
               <div className='control'>
-                <input 
+                <DatePicker 
+                  onChange={onChangeArrival}
+                  value={arrivalValue}
+                />
+                {/* <input 
                   className={`input ${formErrors.return_date ? 
                     'is-danger' : '' }`}
                   placeholder='Return Date'
                   name='return_date'
                   onChange={handleChange}
                   value={formData.return_date}
-                />
+                /> */}
               </div>
               {formErrors.return_date && <p className='help is-danger'>
                 {formErrors.return_date}
               </p>}
             </div>
-            <div className='field'>
+            <div className='field column is-2'>
               <div className='control'>
                 <input 
                   className={`input ${formErrors.passangers ? 
@@ -194,9 +183,9 @@ function HomePage() {
                 {formErrors.passangers}
               </p>}
             </div>
-            <div className='field'>
+            <div className='field column is-2'>
               <button type='submit' className='button is-dark is-fullwidth'>
-                <Link to='/flights'>Search Flights</Link>
+                <Link to={ { pathname: '/flights', state: { filteredFlights } } }>Search Flights</Link>
               </button> 
             </div>
           </form>

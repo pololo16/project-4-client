@@ -1,0 +1,27 @@
+.home {
+  padding: 0px;
+  .bg-image {
+    background-image: url(//content.skyscnr.com/m/785bdfcbe683606c/Large-Flights-hero-2.jpg?crop=1800px:1375px&quality=60);
+    position: relative;
+    width: 100%;
+    background-color: #042759;
+    background-repeat: no-repeat;
+    background-position: 50% 60%;
+    background-size: cover;
+    height: 600px;
+  }
+  .tittle-one {
+    padding: 40px 30px;
+    color: #f6f3f4;
+    font-weight: 700;
+    font-size: 60px !important;
+  }
+
+  .form {
+    width: 100%;
+    color: #f6f3f4;
+    .column {
+      padding: 0;
+    }
+  }
+}
